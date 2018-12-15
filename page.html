@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button type="button" onclick="reset()">Reset Page</button>
+  <div class="container"></div>
+</body>
+
+<script>
+  const grid = document.querySelector(".container")
+  function generateBoxes (dimension) {
+    for (let i = 0; i < (dimension**2); i ++) {
+      grid.style.gridTemplateRows = "repeat(" + dimension + ", 1fr)";
+      grid.style.gridTemplateColumns = "repeat(" + dimension + ", 1fr)";
+      grid.style.gridGap = (dimension/100) + "px";
+      var div = document.createElement('div');
+      div.classList.add('block');
+      div.addEventListener("mouseover", (e) => {
+        if (e.target.classList.contains('block')) {
+          e.target.style.backgroundColor = 'black';
+        }
+      });
+      grid.appendChild(div);
+    }
+  }
+  document.body.appendChild(grid);
+
+  function reset() {
+    var numBoxes = prompt("Please enter the number of squares per side you would like.")
+    var divs = document.querySelectorAll('.block')
+    for (let i = 0; i < divs.length; i++) {
+      divs[i].remove();
+    }
+    generateBoxes(numBoxes)
+  }
+  generateBoxes(10);
+</script>
+
+</html>
