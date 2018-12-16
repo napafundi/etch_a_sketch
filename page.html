@@ -6,27 +6,65 @@
 </head>
 <body>
   <button type="button" onclick="reset()">Reset Page</button>
+  <label> RGB Mode
+    <input type="checkbox" class="rgbBox" onclick="reset()">
+  </label>
+
   <div class="container"></div>
 </body>
 
 <script>
   const grid = document.querySelector(".container")
+  const rgbBox = document.querySelector(".rgbBox")
+
+  function blackSketch(e) {
+    if (e.target.classList.contains('block')) {
+      e.target.style.backgroundColor = 'black';
+    let shade = Number(e.target.style.opacity)
+    if (shade < 1) {
+      e.target.style.opacity = shade + .1;
+      }
+      }
+  }
+
+  function colorSketch(e) {
+    var r = Math.floor(Math.random()*256);
+    var g = Math.floor(Math.random()*256);
+    var b = Math.floor(Math.random()*256);
+    var rgb = "rgb(" + r + "," + g + "," + b + ")";
+    if (e.target.classList.contains('block')) {
+      e.target.style.backgroundColor = rgb;
+    let shade = Number(e.target.style.opacity)
+    if (shade < 1) {
+      e.target.style.opacity = shade + .1;
+      }
+      }
+  }
+
   function generateBoxes (dimension) {
+    if (rgbBox.checked) {
+      for (let i = 0; i < (dimension**2); i ++) {
+        grid.style.gridTemplateRows = "repeat(" + dimension + ", 1fr)";
+        grid.style.gridTemplateColumns = "repeat(" + dimension + ", 1fr)";
+        grid.style.gridGap = (dimension/100) + "px";
+        var div = document.createElement('div');
+        div.classList.add('block');
+        div.addEventListener("mouseover", colorSketch);
+        grid.appendChild(div);
+    }
+    } else {
     for (let i = 0; i < (dimension**2); i ++) {
       grid.style.gridTemplateRows = "repeat(" + dimension + ", 1fr)";
       grid.style.gridTemplateColumns = "repeat(" + dimension + ", 1fr)";
       grid.style.gridGap = (dimension/100) + "px";
       var div = document.createElement('div');
       div.classList.add('block');
-      div.addEventListener("mouseover", (e) => {
-        if (e.target.classList.contains('block')) {
-          e.target.style.backgroundColor = 'black';
-        }
-      });
+      div.addEventListener("mouseover", blackSketch);
       grid.appendChild(div);
     }
   }
   document.body.appendChild(grid);
+  }
 
   function reset() {
     var numBoxes = prompt("Please enter the number of squares per side you would like.")
@@ -34,8 +72,9 @@
     for (let i = 0; i < divs.length; i++) {
       divs[i].remove();
     }
-    generateBoxes(numBoxes)
+    generateBoxes(numBoxes);
   }
+
   generateBoxes(10);
 </script>
 
